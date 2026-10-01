@@ -1,26 +1,99 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Biolock Secure Messaging</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .icon {
+            font-size: 60px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #2563eb;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #status {
+            margin-top: 20px;
+            color: #94a3b8;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>🔐 Biolock Secure Messaging</h1>
+    <div class="container">
 
-    <p>Biometric-protected secure messaging application</p>
+        <div class="icon">🔐</div>
 
-    <hr>
+        <h1>Biolock</h1>
 
-    <h2>Welcome</h2>
+        <p class="subtitle">
+            Secure Messaging System
+        </p>
 
-    <p>Your messages are protected with biometric authentication.</p>
+        <p>
+            Your messages are protected using biometric authentication.
+        </p>
 
-    <button onclick="alert('Biometric authentication coming soon!')">
-        🔒 Unlock Messages
-    </button>
+        <button onclick="unlockMessages()">
+            🔒 Unlock Messages
+        </button>
+
+        <p id="status"></p>
+
+    </div>
+
+    <script>
+        function unlockMessages() {
+            document.getElementById("status").innerText =
+                "🔍 Biometric authentication requested...";
+        }
+    </script>
 
 </body>
 </html>
