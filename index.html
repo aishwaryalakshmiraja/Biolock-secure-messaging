@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,41 +58,127 @@
 
         #status {
             margin-top: 20px;
-            color: #94a3b8;
+            color: #cbd5e1;
+        }
+
+        #messages {
+            display: none;
+            margin-top: 25px;
+            padding: 15px;
+            background: #334155;
+            border-radius: 12px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <div class="icon">🔐</div>
+    <div class="icon">🔐</div>
 
-        <h1>Biolock</h1>
+    <h1>Biolock</h1>
 
-        <p class="subtitle">
-            Secure Messaging System
-        </p>
+    <p class="subtitle">Secure Messaging System</p>
 
-        <p>
-            Your messages are protected using biometric authentication.
-        </p>
+    <p>Your messages are protected using biometric authentication.</p>
 
-        <button onclick="unlockMessages()">
-            🔒 Unlock Messages
-        </button>
+    <button onclick="unlockMessages()">
+        🔒 Unlock Messages
+    </button>
 
-        <p id="status"></p>
+    <p id="status"></p>
 
+    <div id="messages">
+        <h2>💬 Messages Unlocked</h2>
+        <p>Welcome to your secure messages.</p>
+        <p>🔒 Biometric authentication successful.</p>
     </div>
 
-    <script>
-        function unlockMessages() {
-            document.getElementById("status").innerText =
-                "🔍 Biometric authentication requested...";
+</div>
+
+<script>
+
+async function unlockMessages() {
+
+    const status = document.getElementById("status");
+    const messages = document.getElementById("messages");
+
+    if (!window.PublicKeyCredential) {
+        status.innerText =
+            "❌ This browser does not support biometric authentication.";
+        return;
+    }
+
+    try {
+
+        status.innerText = "🔍 Starting biometric authentication...";
+
+        const challenge = crypto.getRandomValues(
+            new Uint8Array(32)
+        );
+
+        const userId = crypto.getRandomValues(
+            new Uint8Array(16)
+        );
+
+        const credential =
+            await navigator.credentials.create({
+
+                publicKey: {
+
+                    challenge: challenge,
+
+                    rp: {
+                        name: "Biolock Secure Messaging"
+                    },
+
+                    user: {
+                        id: userId,
+                        name: "biolock-user",
+                        displayName: "Biolock User"
+                    },
+
+                    pubKeyCredParams: [
+                        {
+                            type: "public-key",
+                            alg: -7
+                        },
+                        {
+                            type: "public-key",
+                            alg: -257
+                        }
+                    ],
+
+                    authenticatorSelection: {
+                        authenticatorAttachment: "platform",
+                        userVerification: "required"
+                    },
+
+                    timeout: 60000,
+
+                    attestation: "none"
+                }
+            });
+
+        if (credential) {
+
+            status.innerText =
+                "✅ Biometric authentication successful!";
+
+            messages.style.display = "block";
         }
-    </script>
+
+    } catch (error) {
+
+        console.log(error);
+
+        status.innerText =
+            "❌ Authentication cancelled or unavailable.";
+    }
+}
+
+</script>
 
 </body>
 </html>
